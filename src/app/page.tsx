@@ -50,15 +50,16 @@ interface FadeInSectionProps {
   className?: string;
 }
 
-interface NavItem {
-  label: string;
-  active: boolean;
-  icon: string;
-}
+// interface NavItem {
+//   label: string;
+//   active: boolean;
+//   icon: string;
+// }
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [activeFilter, setActiveFilter] = useState('all');
   const [isLoading, setIsLoading] = useState(true);
@@ -511,7 +512,7 @@ export default function Home() {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             {["features", "jobs", "testimonials", "contact"].map(
-              (item, index) => (
+              (item) => (
                 <a
                   key={item}
                   href={`#${item}`}
@@ -1283,7 +1284,7 @@ export default function Home() {
                     <div className="flex items-center justify-between mb-8">
                       <div>
                         <h3 className="text-2xl font-semibold">Welcome back, John!</h3>
-                        <p className="text-gray-400">Here's what's happening with your job search</p>
+                        <p className="text-gray-400">Here{"'"}s what{"'"}s happening with your job search</p>
                       </div>
                       <button className="bg-gradient-to-r from-cyan-500 to-blue-500 px-6 py-2 rounded-xl hover:scale-105 transition-transform">
                         Edit Profile

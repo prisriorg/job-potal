@@ -20,7 +20,8 @@ export default function LoginPage() {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       router.push("/dashboard");
-    } catch (err) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (err:unknown) {
       setError("Invalid credentials");
     }
   };

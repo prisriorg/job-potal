@@ -4,8 +4,6 @@ import { useState } from "react";
 import {
   FaBell,
   FaLock,
-  FaUser,
-  FaEnvelope,
   FaGlobe,
   FaTrash,
 } from "react-icons/fa";

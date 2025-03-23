@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+// import { useState } from "react";
 import {
   FaBriefcase,
   FaEye,
@@ -85,7 +85,7 @@ const jobRecommendations = [
 ];
 
 export default function DashboardPage() {
-  const [activeTab, setActiveTab] = useState("overview");
+  // const [activeTab, setActiveTab] = useState("overview");
 
   return (
     <div className="space-y-6">
@@ -95,7 +95,7 @@ export default function DashboardPage() {
           Welcome back, John Doe!
         </h1>
         <p className="mt-1 text-sm text-gray-500">
-          Here's what's happening with your job search today.
+          Here{"'"}s what{"'"}s happening with your job search today.
         </p>
       </div>
 
