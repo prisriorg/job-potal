@@ -536,7 +536,7 @@ export default function Home() {
       {/* Header with Glass Effect */}
       <header
         ref={headerRef}
-        className="sticky top-0 z-50 w-full backdrop-blur-md bg-white/10 border-b border-white/20 shadow-lg"
+        className="sticky top-0 z-50 w-full lg:px-32 backdrop-blur-md bg-white/10 border-b border-white/20 shadow-lg"
       >
         <div className="container mx-auto flex flex-wrap justify-between items-center py-4 px-6">
           <div ref={logoRef} className="flex items-center space-x-2">
@@ -841,7 +841,7 @@ export default function Home() {
       {/* Features Section */}
       <section
         id="features"
-        className="py-20 bg-gradient-to-b from-indigo-900 to-violet-950"
+        className="py-20 lg:px-32 bg-gradient-to-b from-indigo-900 to-violet-950"
       >
         <div className="container mx-auto px-4">
           <FadeInSection className="w-full">
@@ -938,7 +938,7 @@ export default function Home() {
       {/* Jobs Section */}
       <section
         id="jobs"
-        className="py-20 bg-gradient-to-b from-violet-950 to-purple-950"
+        className="py-20 lg:px-32 bg-gradient-to-b from-violet-950 to-purple-950"
       >
         <div className="container mx-auto px-4">
           <FadeInSection className="w-full">
@@ -1136,7 +1136,7 @@ export default function Home() {
       {/* Testimonials Section */}
       <section
         id="testimonials"
-        className="py-20 bg-gradient-to-b from-purple-950 to-pink-950"
+        className="py-20 lg:px-32 bg-gradient-to-b from-purple-950 to-pink-950"
       >
         <div className="container mx-auto px-4">
           <FadeInSection className="w-full">
@@ -1232,7 +1232,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-b from-pink-950 to-indigo-900 relative overflow-hidden">
+      <section className="py-20 lg:px-32 bg-gradient-to-b from-pink-950 to-indigo-900 relative overflow-hidden">
         {/* Animated Floating Shapes */}
         <div className="floating-shapes absolute inset-0 pointer-events-none">
           {Array.from({ length: 6 }).map((_, index) => (
@@ -1289,7 +1289,7 @@ export default function Home() {
       </section>
 
       {/* Dashboard Section */}
-      <section className="py-20 bg-gradient-to-b from-purple-950 to-pink-950 relative overflow-hidden">
+      <section className="py-20 lg:px-32 bg-gradient-to-b from-purple-950 to-pink-950 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="grid grid-cols-12 grid-rows-6 h-full">
             {Array.from({ length: 24 }).map((_, index) => (
@@ -1518,7 +1518,31 @@ export default function Home() {
       </section>
 
       {/* Footer Section */}
-      <footer className="bg-gradient-to-b from-pink-950 to-indigo-950 relative overflow-hidden">
+      <footer className="bg-gradient-to-b lg:px-32 from-pink-950 to-indigo-950 relative overflow-hidden">
+        <FadeInSection
+          delay={0.6}
+          className="mt-16 flex justify-center items-center"
+        >
+          <div className="bg-white/5  w-max backdrop-blur-md border border-white/10 rounded-2xl p-8 text-center">
+            <h3 className="text-xl font-semibold mb-4">Stay Updated</h3>
+            <p className="text-gray-400 mb-6">
+              Subscribe to our newsletter for the latest job opportunities and
+              career tips.
+            </p>
+            <div className="flex flex-col md:flex-row gap-4 max-w-2xl mx-auto">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="flex-grow px-6 py-3 bg-white/10 border border-white/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all"
+              />
+              <button className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold px-8 py-3 rounded-xl shadow-lg transition-all relative overflow-hidden group hover:scale-105 active:scale-95">
+                <span className="relative z-10">Subscribe</span>
+                <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-cyan-400 to-blue-600 opacity-0 group-hover:opacity-100 blur-xl transition-opacity" />
+              </button>
+            </div>
+          </div>
+        </FadeInSection>
+
         {/* Animated Background Elements */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1)_0%,transparent_50%)]"></div>
@@ -1638,26 +1662,6 @@ export default function Home() {
           </div>
 
           {/* Newsletter Subscription */}
-          <FadeInSection delay={0.6} className="mt-16">
-            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 text-center">
-              <h3 className="text-xl font-semibold mb-4">Stay Updated</h3>
-              <p className="text-gray-400 mb-6">
-                Subscribe to our newsletter for the latest job opportunities and
-                career tips.
-              </p>
-              <div className="flex flex-col md:flex-row gap-4 max-w-2xl mx-auto">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="flex-grow px-6 py-3 bg-white/10 border border-white/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all"
-                />
-                <button className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold px-8 py-3 rounded-xl shadow-lg transition-all relative overflow-hidden group hover:scale-105 active:scale-95">
-                  <span className="relative z-10">Subscribe</span>
-                  <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-cyan-400 to-blue-600 opacity-0 group-hover:opacity-100 blur-xl transition-opacity" />
-                </button>
-              </div>
-            </div>
-          </FadeInSection>
 
           {/* Bottom Bar */}
           <FadeInSection
