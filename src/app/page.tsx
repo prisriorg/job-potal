@@ -172,8 +172,11 @@ export default function Home() {
   const openJobModal = (job: Job) => {
     setSelectedJob(job);
     setIsModalOpen(true);
+    // go to login page
+    window.location.href = "/login";
+
     // Freeze body scroll when modal is open
-    document.body.style.overflow = "hidden";
+    // document.body.style.overflow = "hidden";
   };
 
   // Function to close job application modal
@@ -1201,7 +1204,7 @@ export default function Home() {
           <div className="text-center mt-12">
             <FadeInSection delay={1} className="inline-block">
               <a
-                href="#"
+                href="/login"
                 className="view-more inline-flex items-center bg-white/10 hover:bg-white/20 border border-white/20 px-8 py-3 rounded-full transition-all hover:scale-105 hover:translate-x-1"
               >
                 View All Jobs
