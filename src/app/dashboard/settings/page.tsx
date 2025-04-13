@@ -1,12 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  FaBell,
-  FaLock,
-  FaGlobe,
-  FaTrash,
-} from "react-icons/fa";
+import { FaBell, FaLock, FaGlobe, FaTrash } from "react-icons/fa";
 
 export default function SettingsPage() {
   const [settings, setSettings] = useState({
@@ -23,8 +18,8 @@ export default function SettingsPage() {
       showPhone: false,
       showLocation: true,
     },
-    language: "English",
-    timezone: "UTC-8",
+    language: "default",
+    timezone: "UTC+5:30",
   });
 
   const handleNotificationChange = (key: string) => {
@@ -32,7 +27,8 @@ export default function SettingsPage() {
       ...settings,
       notifications: {
         ...settings.notifications,
-        [key]: !settings.notifications[key as keyof typeof settings.notifications],
+        [key]:
+          !settings.notifications[key as keyof typeof settings.notifications],
       },
     });
   };
@@ -76,9 +72,7 @@ export default function SettingsPage() {
             <button
               type="button"
               className={`${
-                settings.notifications.email
-                  ? "bg-cyan-500"
-                  : "bg-gray-200"
+                settings.notifications.email ? "bg-cyan-500" : "bg-gray-200"
               } relative inline-flex  h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2`}
               onClick={() => handleNotificationChange("email")}
             >
@@ -104,9 +98,7 @@ export default function SettingsPage() {
             <button
               type="button"
               className={`${
-                settings.notifications.push
-                  ? "bg-cyan-500"
-                  : "bg-gray-200"
+                settings.notifications.push ? "bg-cyan-500" : "bg-gray-200"
               } relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2`}
               onClick={() => handleNotificationChange("push")}
             >
@@ -132,9 +124,7 @@ export default function SettingsPage() {
             <button
               type="button"
               className={`${
-                settings.notifications.jobAlerts
-                  ? "bg-cyan-500"
-                  : "bg-gray-200"
+                settings.notifications.jobAlerts ? "bg-cyan-500" : "bg-gray-200"
               } relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2`}
               onClick={() => handleNotificationChange("jobAlerts")}
             >
@@ -188,9 +178,7 @@ export default function SettingsPage() {
             <button
               type="button"
               className={`${
-                settings.notifications.marketing
-                  ? "bg-cyan-500"
-                  : "bg-gray-200"
+                settings.notifications.marketing ? "bg-cyan-500" : "bg-gray-200"
               } relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2`}
               onClick={() => handleNotificationChange("marketing")}
             >
@@ -248,17 +236,13 @@ export default function SettingsPage() {
             <button
               type="button"
               className={`${
-                settings.privacy.showEmail
-                  ? "bg-cyan-500"
-                  : "bg-gray-200"
+                settings.privacy.showEmail ? "bg-cyan-500" : "bg-gray-200"
               } relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2`}
               onClick={() => handlePrivacyChange("showEmail")}
             >
               <span
                 className={`${
-                  settings.privacy.showEmail
-                    ? "translate-x-5"
-                    : "translate-x-0"
+                  settings.privacy.showEmail ? "translate-x-5" : "translate-x-0"
                 } pointer-events-none relative inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out`}
               />
             </button>
@@ -276,17 +260,13 @@ export default function SettingsPage() {
             <button
               type="button"
               className={`${
-                settings.privacy.showPhone
-                  ? "bg-cyan-500"
-                  : "bg-gray-200"
+                settings.privacy.showPhone ? "bg-cyan-500" : "bg-gray-200"
               } relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2`}
               onClick={() => handlePrivacyChange("showPhone")}
             >
               <span
                 className={`${
-                  settings.privacy.showPhone
-                    ? "translate-x-5"
-                    : "translate-x-0"
+                  settings.privacy.showPhone ? "translate-x-5" : "translate-x-0"
                 } pointer-events-none relative inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out`}
               />
             </button>
@@ -304,9 +284,7 @@ export default function SettingsPage() {
             <button
               type="button"
               className={`${
-                settings.privacy.showLocation
-                  ? "bg-cyan-500"
-                  : "bg-gray-200"
+                settings.privacy.showLocation ? "bg-cyan-500" : "bg-gray-200"
               } relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2`}
               onClick={() => handlePrivacyChange("showLocation")}
             >
@@ -330,7 +308,9 @@ export default function SettingsPage() {
         </div>
         <div className="space-y-4">
           <div>
-            <label className="text-sm font-medium text-gray-700">Language</label>
+            <label className="text-sm font-medium text-gray-700">
+              Language
+            </label>
             <select
               value={settings.language}
               onChange={(e) =>
@@ -338,16 +318,15 @@ export default function SettingsPage() {
               }
               className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm rounded-md"
             >
+              <option value="default">Default (System Language)</option>
               <option value="English">English</option>
-              <option value="Spanish">Spanish</option>
-              <option value="French">French</option>
-              <option value="German">German</option>
-              <option value="Chinese">Chinese</option>
             </select>
           </div>
 
           <div>
-            <label className="text-sm font-medium text-gray-700">Timezone</label>
+            <label className="text-sm font-medium text-gray-700">
+              Timezone
+            </label>
             <select
               value={settings.timezone}
               onChange={(e) =>
@@ -355,10 +334,87 @@ export default function SettingsPage() {
               }
               className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm rounded-md"
             >
-              <option value="UTC-8">Pacific Time (UTC-8)</option>
-              <option value="UTC-7">Mountain Time (UTC-7)</option>
-              <option value="UTC-6">Central Time (UTC-6)</option>
-              <option value="UTC-5">Eastern Time (UTC-5)</option>
+              <option value="UTC-12">
+                UTC-12:00 (Baker Island, Howland Island)
+              </option>
+              <option value="UTC-11">UTC-11:00 (American Samoa, Niue)</option>
+              <option value="UTC-10">
+                UTC-10:00 (Hawaii-Aleutian Time, Tahiti)
+              </option>
+              <option value="UTC-9:30">UTC-09:30 (Marquesas Islands)</option>
+              <option value="UTC-9">UTC-09:00 (Alaska Time)</option>
+              <option value="UTC-8">
+                UTC-08:00 (Pacific Time, Los Angeles)
+              </option>
+              <option value="UTC-7">UTC-07:00 (Mountain Time, Denver)</option>
+              <option value="UTC-6">UTC-06:00 (Central Time, Chicago)</option>
+              <option value="UTC-5">UTC-05:00 (Eastern Time, New York)</option>
+              <option value="UTC-4:30">
+                UTC-04:30 (Venezuela Time, Caracas)
+              </option>
+              <option value="UTC-4">UTC-04:00 (Atlantic Time, La Paz)</option>
+              <option value="UTC-3:30">
+                UTC-03:30 (Newfoundland Time, St. John)
+              </option>
+              <option value="UTC-3">UTC-03:00 (Buenos Aires, São Paulo)</option>
+              <option value="UTC-2">
+                UTC-02:00 (South Georgia & South Sandwich Islands)
+              </option>
+              <option value="UTC-1">UTC-01:00 (Azores, Cape Verde)</option>
+              <option value="UTC+0">
+                UTC+00:00 (Greenwich Mean Time, London)
+              </option>
+              <option value="UTC+1">
+                UTC+01:00 (Central European Time, Berlin)
+              </option>
+              <option value="UTC+2">
+                UTC+02:00 (Eastern European Time, Cairo)
+              </option>
+              <option value="UTC+3">UTC+03:00 (Moscow Time, Nairobi)</option>
+              <option value="UTC+3:30">
+                UTC+03:30 (Iran Standard Time, Tehran)
+              </option>
+              <option value="UTC+4">UTC+04:00 (Dubai, Samara)</option>
+              <option value="UTC+4:30">
+                UTC+04:30 (Afghanistan Time, Kabul)
+              </option>
+              <option value="UTC+5">
+                UTC+05:00 (Pakistan Standard Time, Karachi)
+              </option>
+              <option value="UTC+5:30">
+                UTC+05:30 (Indian Standard Time, New Delhi)
+              </option>
+              <option value="UTC+5:45">
+                UTC+05:45 (Nepal Time, Kathmandu)
+              </option>
+              <option value="UTC+6">UTC+06:00 (Bangladesh Time, Dhaka)</option>
+              <option value="UTC+6:30">
+                UTC+06:30 (Cocos Islands, Yangon)
+              </option>
+              <option value="UTC+7">UTC+07:00 (Indochina Time, Bangkok)</option>
+              <option value="UTC+8">
+                UTC+08:00 (China Standard Time, Beijing)
+              </option>
+              <option value="UTC+8:45">
+                UTC+08:45 (Australian Central Western Time)
+              </option>
+              <option value="UTC+9">
+                UTC+09:00 (Japan Standard Time, Tokyo)
+              </option>
+              <option value="UTC+9:30">
+                UTC+09:30 (Australian Central Time, Adelaide)
+              </option>
+              <option value="UTC+10">
+                UTC+10:00 (Australian Eastern Time, Sydney)
+              </option>
+              <option value="UTC+10:30">UTC+10:30 (Lord Howe Island)</option>
+              <option value="UTC+11">
+                UTC+11:00 (Solomon Islands, New Caledonia)
+              </option>
+              <option value="UTC+12">UTC+12:00 (Fiji, Kamchatka)</option>
+              <option value="UTC+12:45">UTC+12:45 (Chatham Islands)</option>
+              <option value="UTC+13">UTC+13:00 (Tonga, Samoa)</option>
+              <option value="UTC+14">UTC+14:00 (Line Islands, Kiribati)</option>
             </select>
           </div>
         </div>
@@ -390,4 +446,4 @@ export default function SettingsPage() {
       </div>
     </div>
   );
-} 
+}

@@ -1160,7 +1160,7 @@ export default function Home() {
                           key={idx}
                           className={`skill-tag bg-white/5 text-sm py-1 px-3 rounded-full border border-white/5 group-hover:border-${
                             job.color.split("-")[2]
-                          }-400/30 transition-colors hover:scale-110 hover:bg-white/15 transition-all`}
+                          }-400/30  hover:scale-110 hover:bg-white/15 transition-all`}
                         >
                           {skill}
                         </span>
@@ -1296,7 +1296,7 @@ export default function Home() {
                   </p>
                   <div className="flex items-center">
                     {testimonial.avatar ? (
-                      <div className="w-12 h-12 rounded-full mr-4 overflow-hidden border-2 border-white/20 group-hover:border-white/40 transition-colors hover:scale-110 hover:rotate-6 transition-transform">
+                      <div className="w-12 h-12 rounded-full mr-4 overflow-hidden border-2 border-white/20 group-hover:border-white/40  hover:scale-110 hover:rotate-6 transition-transform">
                         <Image
                           src={testimonial.avatar}
                           alt={testimonial.name}

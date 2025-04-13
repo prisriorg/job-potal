@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FaUser,
   FaEnvelope,
@@ -11,10 +11,13 @@ import {
   FaLinkedin,
   FaGithub,
   FaGlobe,
+  FaPlus,
+  FaTrash,
 } from "react-icons/fa";
 
 export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
+  const [originalProfile, setOriginalProfile] = useState(null);
   const [profile, setProfile] = useState({
     fullName: "John Doe",
     email: "john.doe@example.com",
@@ -53,15 +56,109 @@ export default function ProfilePage() {
     },
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const startEditing = () => {
+    setOriginalProfile(JSON.parse(JSON.stringify(profile)));
+    setIsEditing(true);
+  };
+
+  const cancelEditing = () => {
+    if (originalProfile) {
+      setProfile(originalProfile);
+    }
+    setIsEditing(false);
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
     setIsEditing(false);
-    // Add your profile update logic here
+    localStorage.setItem("user", JSON.stringify(profile));
+    setOriginalProfile(null);
   };
+
+  const addExperience = () => {
+    setProfile({
+      ...profile,
+      experience: [
+        ...profile.experience,
+        {
+          company: "",
+          role: "",
+          period: "",
+          description: "",
+        },
+      ],
+    });
+  };
+
+  const removeExperience = (index:number) => {
+    const newExperience = [...profile.experience];
+    newExperience.splice(index, 1);
+    setProfile({
+      ...profile,
+      experience: newExperience,
+    });
+  };
+
+  const updateExperience = (index:number, field:string, value:any) => {
+    const newExperience = [...profile.experience];
+    newExperience[index] = {
+      ...newExperience[index],
+      [field]: value,
+    };
+    setProfile({
+      ...profile,
+      experience: newExperience,
+    });
+  };
+
+  const addEducation = () => {
+    setProfile({
+      ...profile,
+      education: [
+        ...profile.education,
+        {
+          school: "",
+          degree: "",
+          period: "",
+        },
+      ],
+    });
+  };
+
+  const removeEducation = (index:number) => {
+    const newEducation = [...profile.education];
+    newEducation.splice(index, 1);
+    setProfile({
+      ...profile,
+      education: newEducation,
+    });
+  };
+
+  const updateEducation = (index:number, field:string, value:any) => {
+    const newEducation = [...profile.education];
+    newEducation[index] = {
+      ...newEducation[index],
+      [field]: value,
+    };
+    setProfile({
+      ...profile,
+      education: newEducation,
+    });
+  };
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      setProfile((prevProfile) => ({
+        ...prevProfile,
+        ...parsedUser,
+      }));
+    }
+  }, []);
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="bg-white shadow rounded-lg p-6">
         <div className="flex justify-between items-center">
           <div>
@@ -70,18 +167,37 @@ export default function ProfilePage() {
               Manage your personal information and professional details.
             </p>
           </div>
-          <button
-            onClick={() => setIsEditing(!isEditing)}
-            className="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
-          >
-            {isEditing ? "Cancel" : "Edit Profile"}
-          </button>
+          <div className="space-x-3">
+            {isEditing ? (
+              <>
+                <button
+                  onClick={cancelEditing}
+                  className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSubmit}
+                  form="profile-form"
+                  type="submit"
+                  className="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
+                >
+                  Save Changes
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={startEditing}
+                className="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
+              >
+                Edit Profile
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Profile Form */}
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Basic Information */}
+      <form id="profile-form" onSubmit={handleSubmit} className="space-y-6">
         <div className="bg-white shadow rounded-lg p-6">
           <h2 className="text-lg font-medium text-gray-900 mb-4">
             Basic Information
@@ -189,7 +305,6 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* Professional Information */}
         <div className="bg-white shadow rounded-lg p-6">
           <h2 className="text-lg font-medium text-gray-900 mb-4">
             Professional Information
@@ -270,7 +385,6 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* Social Links */}
         <div className="bg-white shadow rounded-lg p-6">
           <h2 className="text-lg font-medium text-gray-900 mb-4">
             Social Links
@@ -362,59 +476,221 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* Experience */}
         <div className="bg-white shadow rounded-lg p-6">
-          <h2 className="text-lg font-medium text-gray-900 mb-4">Experience</h2>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-lg font-medium text-gray-900">Experience</h2>
+            {isEditing && (
+              <button
+                type="button"
+                onClick={addExperience}
+                className="inline-flex items-center px-3 py-1.5 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
+              >
+                <FaPlus className="mr-1.5 h-3 w-3" />
+                Add
+              </button>
+            )}
+          </div>
+
           <div className="space-y-6">
             {profile.experience.map((exp, index) => (
               <div key={index} className="border-b border-gray-200 pb-6">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-sm font-medium text-gray-900">
-                      {exp.role}
-                    </h3>
-                    <p className="text-sm text-gray-500">{exp.company}</p>
+                {isEditing ? (
+                  <div className="space-y-4">
+                    <div className="flex justify-between">
+                      <div className="w-full pr-2">
+                        <label className="block text-xs font-medium text-gray-500">
+                          Role
+                        </label>
+                        <input
+                          type="text"
+                          value={exp.role}
+                          onChange={(e) =>
+                            updateExperience(index, "role", e.target.value)
+                          }
+                          className="mt-1 block w-full sm:text-sm border-gray-300 rounded-md focus:ring-cyan-500 focus:border-cyan-500"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => removeExperience(index)}
+                        className="ml-2 mt-6 inline-flex items-center px-2.5 py-1.5 border border-transparent rounded text-xs font-medium text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                      >
+                        <FaTrash className="h-3 w-3" />
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-medium text-gray-500">
+                          Company
+                        </label>
+                        <input
+                          type="text"
+                          value={exp.company}
+                          onChange={(e) =>
+                            updateExperience(index, "company", e.target.value)
+                          }
+                          className="mt-1 block w-full sm:text-sm border-gray-300 rounded-md focus:ring-cyan-500 focus:border-cyan-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-gray-500">
+                          Period
+                        </label>
+                        <input
+                          type="text"
+                          value={exp.period}
+                          onChange={(e) =>
+                            updateExperience(index, "period", e.target.value)
+                          }
+                          className="mt-1 block w-full sm:text-sm border-gray-300 rounded-md focus:ring-cyan-500 focus:border-cyan-500"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-medium text-gray-500">
+                        Description
+                      </label>
+                      <textarea
+                        value={exp.description}
+                        onChange={(e) =>
+                          updateExperience(index, "description", e.target.value)
+                        }
+                        rows={3}
+                        className="mt-1 block w-full sm:text-sm border-gray-300 rounded-md focus:ring-cyan-500 focus:border-cyan-500"
+                      />
+                    </div>
                   </div>
-                  <p className="text-sm text-gray-500">{exp.period}</p>
-                </div>
-                <p className="mt-2 text-sm text-gray-500">{exp.description}</p>
+                ) : (
+                  <div>
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h3 className="text-sm font-medium text-gray-900">
+                          {exp.role}
+                        </h3>
+                        <p className="text-sm text-gray-500">{exp.company}</p>
+                      </div>
+                      <p className="text-sm text-gray-500">{exp.period}</p>
+                    </div>
+                    <p className="mt-2 text-sm text-gray-500">
+                      {exp.description}
+                    </p>
+                  </div>
+                )}
               </div>
             ))}
+
+            {profile.experience.length === 0 && (
+              <p className="text-sm text-gray-500 italic">
+                No experience added yet.
+              </p>
+            )}
           </div>
         </div>
 
-        {/* Education */}
         <div className="bg-white shadow rounded-lg p-6">
-          <h2 className="text-lg font-medium text-gray-900 mb-4">Education</h2>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-lg font-medium text-gray-900">Education</h2>
+            {isEditing && (
+              <button
+                type="button"
+                onClick={addEducation}
+                className="inline-flex items-center px-3 py-1.5 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
+              >
+                <FaPlus className="mr-1.5 h-3 w-3" />
+                Add
+              </button>
+            )}
+          </div>
+
           <div className="space-y-6">
             {profile.education.map((edu, index) => (
-              <div key={index} className="flex items-start">
-                <div className="flex-shrink-0">
-                  <FaGraduationCap className="h-6 w-6 text-gray-400" />
-                </div>
-                <div className="ml-4">
-                  <h3 className="text-sm font-medium text-gray-900">
-                    {edu.degree}
-                  </h3>
-                  <p className="text-sm text-gray-500">{edu.school}</p>
-                  <p className="text-sm text-gray-500">{edu.period}</p>
-                </div>
+              <div
+                key={index}
+                className={`${
+                  isEditing ? "border-b border-gray-200 pb-6" : "flex items-start"
+                }`}
+              >
+                {isEditing ? (
+                  <div className="space-y-4">
+                    <div className="flex justify-between">
+                      <div className="w-full pr-2">
+                        <label className="block text-xs font-medium text-gray-500">
+                          Degree
+                        </label>
+                        <input
+                          type="text"
+                          value={edu.degree}
+                          onChange={(e) =>
+                            updateEducation(index, "degree", e.target.value)
+                          }
+                          className="mt-1 block w-full sm:text-sm border-gray-300 rounded-md focus:ring-cyan-500 focus:border-cyan-500"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => removeEducation(index)}
+                        className="ml-2 mt-6 inline-flex items-center px-2.5 py-1.5 border border-transparent rounded text-xs font-medium text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                      >
+                        <FaTrash className="h-3 w-3" />
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-medium text-gray-500">
+                          School
+                        </label>
+                        <input
+                          type="text"
+                          value={edu.school}
+                          onChange={(e) =>
+                            updateEducation(index, "school", e.target.value)
+                          }
+                          className="mt-1 block w-full sm:text-sm border-gray-300 rounded-md focus:ring-cyan-500 focus:border-cyan-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-gray-500">
+                          Period
+                        </label>
+                        <input
+                          type="text"
+                          value={edu.period}
+                          onChange={(e) =>
+                            updateEducation(index, "period", e.target.value)
+                          }
+                          className="mt-1 block w-full sm:text-sm border-gray-300 rounded-md focus:ring-cyan-500 focus:border-cyan-500"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex-shrink-0">
+                      <FaGraduationCap className="h-6 w-6 text-gray-400" />
+                    </div>
+                    <div className="ml-4">
+                      <h3 className="text-sm font-medium text-gray-900">
+                        {edu.degree}
+                      </h3>
+                      <p className="text-sm text-gray-500">{edu.school}</p>
+                      <p className="text-sm text-gray-500">{edu.period}</p>
+                    </div>
+                  </>
+                )}
               </div>
             ))}
+
+            {profile.education.length === 0 && (
+              <p className="text-sm text-gray-500 italic">
+                No education added yet.
+              </p>
+            )}
           </div>
         </div>
-
-        {isEditing && (
-          <div className="flex justify-end">
-            <button
-              type="submit"
-              className="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
-            >
-              Save Changes
-            </button>
-          </div>
-        )}
       </form>
     </div>
   );
-} 
+}

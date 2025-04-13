@@ -14,14 +14,17 @@ import {
   FaTimes,
   FaSearch,
   FaBell,
+  FaEnvelopeOpenText,
 } from "react-icons/fa";
 
 const navigation = [
   { name: "Overview", href: "/dashboard", icon: FaHome },
   { name: "Jobs", href: "/dashboard/jobs", icon: FaBriefcase },
-  { name: "Applications", href: "/dashboard/applications", icon: FaBriefcase },
+  { name: "Applications", href: "/dashboard/applications", icon: 
+    FaEnvelopeOpenText
+  },
   { name: "Profile", href: "/dashboard/profile", icon: FaUser },
-  { name: "Messages", href: "/dashboard/messages", icon: FaEnvelope },
+  // { name: "Messages", href: "/dashboard/messages", icon: FaEnvelope },
   { name: "Settings", href: "/dashboard/settings", icon: FaCog },
 ];
 
