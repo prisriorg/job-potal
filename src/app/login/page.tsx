@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { FaGoogle, FaGithub, FaLinkedin } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
@@ -18,13 +17,20 @@ export default function LoginPage() {
     // Add your login logic here
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      localStorage.setItem("user", JSON.stringify(formData));
       router.push("/dashboard");
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err:unknown) {
       setError("Invalid credentials");
     }
   };
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      router.push("/dashboard");
+    }
+  }, [router]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-indigo-900 via-purple-900 to-pink-800 py-12 px-4 sm:px-6 lg:px-8">
@@ -94,6 +100,29 @@ export default function LoginPage() {
             </div>
           </div>
 
+          {/* Radio Buttons for Job Seeker or Employer */}
+          <div className="flex items-center justify-around mt-4">
+            <label className="inline-flex items-center text-sm text-gray-300">
+              <input
+                type="radio"
+                name="userRole"
+                value="jobseeker"
+                defaultChecked
+                className="mr-2 h-4 w-4 text-cyan-400 border-white/20 bg-white/10 rounded focus:ring-cyan-400"
+              />
+              Job Seeker
+            </label>
+            <label className="inline-flex items-center text-sm text-gray-300">
+              <input
+                type="radio"
+                name="userRole"
+                value="employer"
+                className="mr-2 h-4 w-4 text-cyan-400 border-white/20 bg-white/10 rounded focus:ring-cyan-400"
+              />
+              Employer
+            </label>
+          </div>
+
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <input
@@ -130,7 +159,7 @@ export default function LoginPage() {
           </div>
         </form>
 
-        <div className="mt-6">
+        {/* <div className="mt-6">
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-white/20"></div>
@@ -153,8 +182,8 @@ export default function LoginPage() {
               <FaLinkedin className="h-5 w-5" />
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
-} 
+}

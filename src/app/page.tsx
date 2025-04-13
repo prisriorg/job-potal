@@ -25,6 +25,7 @@ import Link from "next/link";
 
 // Register GSAP plugins
 // if (typeof window !== 'undefined') {
+
 gsap.registerPlugin(ScrollTrigger);
 // }
 
@@ -77,8 +78,16 @@ export default function Home() {
   const loadingRef = useRef<HTMLDivElement>(null);
   const backToTopRef = useRef<HTMLDivElement>(null);
 
+  const getUsers = async () => {
+    
+    const getUser= localStorage.getItem("user");
+    console.log(getUser);
+  }
+
   // Add at the beginning of your component
   useEffect(() => {
+    getUsers();
+
     const checkPerformance = () => {
       const isLowEndDevice =
         // Check for low CPU cores
@@ -547,15 +556,16 @@ export default function Home() {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-6">
             {["features", "jobs", "testimonials", "contact"].map((item) => (
               <a
                 key={item}
                 href={`#${item}`}
-                className="nav-link font-medium hover:text-cyan-300 transition-colors"
-                style={{ opacity: 0, transform: "translateY(-10px)" }}
+                className="nav-link relative px-2 py-1 font-medium text-gray-200 hover:text-white transition-colors duration-300 group"
               >
                 {item.charAt(0).toUpperCase() + item.slice(1)}
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 group-hover:w-full transition-all duration-300"></span>
+                {/* <span className="absolute -bottom-1 left-1/2 w-1 h-1 rounded-full bg-cyan-400 opacity-0 group-hover:opacity-100 transform -translate-x-1/2 transition-all duration-300 delay-150"></span> */}
               </a>
             ))}
           </nav>
@@ -654,17 +664,32 @@ export default function Home() {
 
         {/* Search Bar */}
         <FadeInSection delay={0.4} className="w-full max-w-3xl">
-          <div className="search-bar bg-white/10 backdrop-blur-md p-4 rounded-2xl mb-12 border border-white/20 shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              const formData = new FormData(e.currentTarget);
+              const params = new URLSearchParams();
+              formData.forEach((value, key) => {
+                if (value) params.append(key, value.toString());
+              });
+              window.location.href = `/search?${params.toString()}`;
+            }}
+            className="search-bar bg-white/10 backdrop-blur-md p-4 rounded-2xl mb-12 border border-white/20 shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1"
+          >
             <div className="flex flex-col md:flex-row gap-4">
               <div className="relative flex-grow group">
                 <FaSearch className="absolute left-4 top-3.5 text-gray-300 group-hover:text-cyan-300 transition-colors" />
                 <input
                   type="text"
+                  name="keyword"
                   placeholder="Job title or keyword"
                   className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all group-hover:border-cyan-300/50"
                 />
               </div>
-              <button className="search-btn bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold px-8 py-3 rounded-xl shadow-lg transition-all relative overflow-hidden group hover:scale-105 active:scale-95">
+              <button
+                type="submit"
+                className="search-btn bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold px-8 py-3 rounded-xl shadow-lg transition-all relative overflow-hidden group hover:scale-105 active:scale-95"
+              >
                 <span className="relative z-10">Search Jobs</span>
                 <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-cyan-400 to-blue-600 opacity-0 group-hover:opacity-100 blur-xl transition-opacity" />
               </button>
@@ -673,6 +698,7 @@ export default function Home() {
             {/* Advanced Search Filters - Expandable */}
             <div className="mt-4 overflow-hidden transition-all">
               <button
+                type="button"
                 className="flex items-center justify-center w-full text-center text-sm text-cyan-300 hover:text-cyan-200 transition-colors"
                 onClick={() => {
                   const filtersEl = document.getElementById("advanced-filters");
@@ -706,17 +732,37 @@ export default function Home() {
 
               <div
                 id="advanced-filters"
-                className="h-0 overflow-hidden transition-all duration-300"
+                className="overflow-hidden transition-all duration-300 h-0"
               >
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 m-1">
                   <div className="relative">
-                    <select className="w-full pl-4 pr-10 py-3 bg-white/10 border border-white/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all appearance-none">
-                      <option value="">Job Type</option>
-                      <option value="full-time">Full-time</option>
-                      <option value="part-time">Part-time</option>
-                      <option value="contract">Contract</option>
-                      <option value="freelance">Freelance</option>
-                      <option value="remote">Remote</option>
+                    <select
+                      name="jobType"
+                      className="w-full pl-4 pr-10 py-3 bg-white/10 border border-white/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all appearance-none text-white"
+                      defaultValue=""
+                    >
+                      <option
+                        value=""
+                        disabled
+                        className="text-gray-500 bg-white/10"
+                      >
+                        Job Type
+                      </option>
+                      <option value="full-time" className="text-green-500">
+                        🕒 Full-time
+                      </option>
+                      <option value="part-time" className="text-blue-500">
+                        ⏳ Part-time
+                      </option>
+                      <option value="contract" className="text-orange-500">
+                        📜 Contract
+                      </option>
+                      <option value="freelance" className="text-purple-500">
+                        💻 Freelance
+                      </option>
+                      <option value="remote" className="text-teal-500">
+                        🌍 Remote
+                      </option>
                     </select>
                     <div className="absolute right-4 top-3.5 pointer-events-none">
                       <svg
@@ -737,12 +783,30 @@ export default function Home() {
                   </div>
 
                   <div className="relative">
-                    <select className="w-full pl-4 pr-10 py-3 bg-white/10 border border-white/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all appearance-none">
-                      <option value="">Experience Level</option>
-                      <option value="entry">Entry Level</option>
-                      <option value="mid">Mid Level</option>
-                      <option value="senior">Senior Level</option>
-                      <option value="executive">Executive</option>
+                    <select
+                      name="experience"
+                      className="w-full pl-4 pr-10 py-3 bg-white/10 border border-white/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all appearance-none"
+                      defaultValue=""
+                    >
+                      <option
+                        value=""
+                        disabled
+                        className="text-gray-500 bg-white"
+                      >
+                        Experience Level
+                      </option>
+                      <option value="entry" className="text-green-500">
+                        🟢 Entry Level
+                      </option>
+                      <option value="mid" className="text-blue-500">
+                        🔵 Mid Level
+                      </option>
+                      <option value="senior" className="text-orange-500">
+                        🟠 Senior Level
+                      </option>
+                      <option value="executive" className="text-purple-500">
+                        🟣 Executive
+                      </option>
                     </select>
                     <div className="absolute right-4 top-3.5 pointer-events-none">
                       <svg
@@ -763,12 +827,30 @@ export default function Home() {
                   </div>
 
                   <div className="relative">
-                    <select className="w-full pl-4 pr-10 py-3 bg-white/10 border border-white/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all appearance-none">
-                      <option value="">Salary Range</option>
-                      <option value="0-10">₹0-10 LPA</option>
-                      <option value="10-20">₹10-20 LPA</option>
-                      <option value="20-30">₹20-30 LPA</option>
-                      <option value="30-plus">₹30+ LPA</option>
+                    <select
+                      name="salary"
+                      className="w-full pl-4 pr-10 py-3 bg-white/10 border border-white/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all appearance-none text-white"
+                      defaultValue=""
+                    >
+                      <option
+                        value=""
+                        disabled
+                        className="text-gray-500 bg-white/10"
+                      >
+                        Salary Range
+                      </option>
+                      <option value="0-10" className="text-green-500">
+                        💸 ₹0-10 LPA
+                      </option>
+                      <option value="10-20" className="text-blue-500">
+                        💸 ₹10-20 LPA
+                      </option>
+                      <option value="20-30" className="text-orange-500">
+                        💸 ₹20-30 LPA
+                      </option>
+                      <option value="30-plus" className="text-purple-500">
+                        💸 ₹30+ LPA
+                      </option>
                     </select>
                     <div className="absolute right-4 top-3.5 pointer-events-none">
                       <svg
@@ -804,6 +886,14 @@ export default function Home() {
                   ].map((skill) => (
                     <button
                       key={skill}
+                      type="button"
+                      onClick={(e) => {
+                        const input = document.createElement("input");
+                        input.type = "hidden";
+                        input.name = "skills";
+                        input.value = skill;
+                        e.currentTarget.closest("form")?.appendChild(input);
+                      }}
                       className="text-sm py-1 px-3 rounded-full border border-white/10 bg-white/5 hover:bg-white/15 hover:border-cyan-400/30 transition-colors"
                     >
                       {skill}
@@ -812,7 +902,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-          </div>
+          </form>
         </FadeInSection>
 
         {/* Stats */}
@@ -1519,6 +1609,7 @@ export default function Home() {
 
       {/* Footer Section */}
       <footer className="bg-gradient-to-b lg:px-32 from-pink-950 to-indigo-950 relative overflow-hidden">
+        {/* Newsletter Subscription */}
         <FadeInSection
           delay={0.6}
           className="mt-16 flex justify-center items-center"
@@ -1615,7 +1706,7 @@ export default function Home() {
               <h3 className="text-lg font-semibold">For Job Seekers</h3>
               <ul className="space-y-2">
                 {[
-                  { label: "Create Profile", href: "#" },
+                  { label: "Create Profile", href: "/signup" },
                   { label: "Job Alerts", href: "#" },
                   { label: "Career Resources", href: "#" },
                   { label: "Interview Tips", href: "#" },
@@ -1661,39 +1752,37 @@ export default function Home() {
             </FadeInSection>
           </div>
 
-          {/* Newsletter Subscription */}
-
           {/* Bottom Bar */}
-          <FadeInSection
-            delay={0.7}
-            className="mt-16 pt-8 border-t border-white/10"
-          >
-            <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-              <p className="text-gray-400 text-sm">
-                © {new Date().getFullYear()} Job Portal. All rights reserved.
-              </p>
-              <div className="flex space-x-6">
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white text-sm transition-colors"
-                >
-                  Privacy Policy
-                </a>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white text-sm transition-colors"
-                >
-                  Terms of Service
-                </a>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white text-sm transition-colors"
-                >
-                  Cookie Policy
-                </a>
-              </div>
+        </div>
+        <div
+          // delay={0.5}
+          className="mt-16 p-8 border-t border-white/10"
+        >
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <p className="text-gray-400 text-sm">
+              © {new Date().getFullYear()} Job Portal. All rights reserved.
+            </p>
+            <div className="flex space-x-6">
+              <a
+                href="#"
+                className="text-gray-400 hover:text-white text-sm transition-colors"
+              >
+                Privacy Policy
+              </a>
+              <a
+                href="#"
+                className="text-gray-400 hover:text-white text-sm transition-colors"
+              >
+                Terms of Service
+              </a>
+              <a
+                href="#"
+                className="text-gray-400 hover:text-white text-sm transition-colors"
+              >
+                Cookie Policy
+              </a>
             </div>
-          </FadeInSection>
+          </div>
         </div>
       </footer>
 

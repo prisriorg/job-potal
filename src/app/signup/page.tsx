@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { FaGoogle, FaGithub, FaLinkedin } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 
 export default function SignupPage() {
@@ -12,6 +11,7 @@ export default function SignupPage() {
     email: "",
     password: "",
     confirmPassword: "",
+    role: "jobseeker",
   });
   const [error, setError] = useState("");
 
@@ -24,13 +24,19 @@ export default function SignupPage() {
     // Add your signup logic here
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      localStorage.setItem("user", JSON.stringify(formData));
       router.push("/dashboard");
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err: unknown) {
       setError("Error creating account");
     }
   };
+   useEffect(() => {
+      const user = localStorage.getItem("user");
+      if (user) {
+        router.push("/dashboard");
+      }
+    }, [router]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-indigo-900 via-purple-900 to-pink-800 py-12 px-4 sm:px-6 lg:px-8">
@@ -134,6 +140,56 @@ export default function SignupPage() {
             </div>
           </div>
 
+
+          <div className="flex items-center justify-around mt-4">
+            <label className="inline-flex items-center text-sm text-gray-300">
+              <input
+                type="radio"
+                name="role"
+                value="jobseeker"
+                defaultChecked
+                className="mr-2 h-4 w-4 text-cyan-400 border-white/20 bg-white/10 rounded focus:ring-cyan-400"
+              />
+              Job Seeker
+            </label>
+            <label className="inline-flex items-center text-sm text-gray-300">
+              <input
+                type="radio"
+                name="role"
+                value="employer"
+                className="mr-2 h-4 w-4 text-cyan-400 border-white/20 bg-white/10 rounded focus:ring-cyan-400"
+              />
+              Employer
+            </label>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <input
+                id="remember-me"
+                name="remember-me"
+                type="checkbox"
+                className="h-4 w-4 text-cyan-400 focus:ring-cyan-400 border-white/20 rounded bg-white/10"
+              />
+              <label
+                htmlFor="remember-me"
+                className="ml-2 block text-sm text-gray-300"
+              >
+                Remember me
+              </label>
+            </div>
+
+            <div className="text-sm">
+              <Link
+                href="/forgot-password"
+                className="font-medium text-cyan-400 hover:text-cyan-300"
+              >
+                Forgot your password?
+              </Link>
+            </div>
+          </div>
+
+
           <div>
             <button
               type="submit"
@@ -144,7 +200,7 @@ export default function SignupPage() {
           </div>
         </form>
 
-        <div className="mt-6">
+        {/* <div className="mt-6">
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-white/20"></div>
@@ -167,7 +223,7 @@ export default function SignupPage() {
               <FaLinkedin className="h-5 w-5" />
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

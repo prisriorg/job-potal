@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -18,6 +18,7 @@ import {
 
 const navigation = [
   { name: "Overview", href: "/dashboard", icon: FaHome },
+  { name: "Jobs", href: "/dashboard/jobs", icon: FaBriefcase },
   { name: "Applications", href: "/dashboard/applications", icon: FaBriefcase },
   { name: "Profile", href: "/dashboard/profile", icon: FaUser },
   { name: "Messages", href: "/dashboard/messages", icon: FaEnvelope },
@@ -32,6 +33,18 @@ export default function DashboardLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
 
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (!user) {
+      window.location.href = "/login";
+    }
+  }, []);
+
+  const logout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    window.location.href = "/login";
+  };
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Mobile sidebar */}
@@ -80,7 +93,10 @@ export default function DashboardLayout({
             })}
           </nav>
           <div className="border-t border-gray-200 p-4">
-            <button className="flex w-full items-center px-2 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-lg">
+            <button
+              className="flex w-full items-center px-2 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-lg"
+              onClick={logout}
+            >
               <FaSignOutAlt className="mr-3 h-5 w-5 text-gray-400" />
               Sign out
             </button>
@@ -121,7 +137,10 @@ export default function DashboardLayout({
             })}
           </nav>
           <div className="border-t border-gray-200 p-4">
-            <button className="flex w-full items-center px-2 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-lg">
+            <button
+              className="flex w-full items-center px-2 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-lg"
+              onClick={logout}
+            >
               <FaSignOutAlt className="mr-3 h-5 w-5 text-gray-400" />
               Sign out
             </button>
@@ -179,9 +198,11 @@ export default function DashboardLayout({
           </div>
         </div>
         <main className="py-6">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">{children}</div>
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            {children}
+          </div>
         </main>
       </div>
     </div>
   );
-} 
+}
